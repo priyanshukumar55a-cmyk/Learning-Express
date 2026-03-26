@@ -1,9 +1,27 @@
-const http = require('http');
+// External module
+const express = require('express')
+
+//Local Module
 const requestHandler=require('./user')
 
-const server=http.createServer(requestHandler);
+const app = express();
+
+app.get("/" , (req,res,next) => {
+  console.log("Came in first middleware", req.url, req.method);
+  next();
+})
+
+app.post("/submit-details" , (req,res,next) => {
+  console.log("Came in second middleware", req.url, req.method);
+  res.send("<p>Welcome to Complete Coding Nodejs series</p>")
+})
+
+app.use("/" , (req,res,next) => {
+  console.log("Came in another middleware", req.url, req.method);
+  res.send("<p>Came from another middleware</p>")
+})
 
 const PORT = 3000;
-server.listen(PORT,()=>{
+app.listen(PORT,()=>{
   console.log(`Server running on address http://localhost:${PORT}`)
 });
